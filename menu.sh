@@ -1,6 +1,16 @@
 #!/bin/bash
 
 CURRENT_BRANCH=$(git name-rev --name-only HEAD)
+=======
+#get path of menu correct
+pushd ~/shared/IOTstack
+
+CURRENT_BRANCH=${1:-$(git name-rev --name-only HEAD)}
+
+# Consts/vars
+TMP_DOCKER_COMPOSE_YML=./.tmp/docker-compose.tmp.yml
+DOCKER_COMPOSE_YML=./docker-compose.yml
+DOCKER_COMPOSE_OVERRIDE_YML=./compose-override.yml
 
 # Minimum Software Versions
 REQ_DOCKER_VERSION=18.2.0
