@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #get path of menu correct
-pushd ~/IOTstack
+pushd ~/shared/IOTstack
 
 CURRENT_BRANCH=${1:-$(git name-rev --name-only HEAD)}
 
