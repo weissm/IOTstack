@@ -1,0 +1,35 @@
+version: '2.1'
+services:
+  ccu:
+    container_name: ccu
+    image: angelnu/ccu:3
+    restart: unless-stopped
+    ports:
+    - 80:80
+    - 2001:2001
+    - 2010:2010
+#    - 2222:22
+    - 8181:8181
+#    network_mode: host
+    networks:
+      lan:
+        # Define a static ip for the container. The containter can be accessible by others devices on the LAN network with this IP.
+        ipv4_address: 192.168.10.10
+
+    privileged: true
+    volumes:
+      - "./volumes/ccu:/mnt"
+      - "./volumes/ccu_data:/usr/local/addons"
+
+networks:
+  lan:
+    name: lan
+    driver: macvlan
+    driver_opts:
+      parent: eth0.10 #your ethernet interface
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.10.0/24
+          gateway: 192.168.10.1
+

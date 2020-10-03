@@ -1,0 +1,80 @@
+version: '3.8'
+services:
+  portainer:
+    container_name: portainer
+    image: portainer/portainer
+    restart: unless-stopped
+    ports:
+    - 9002:9000
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - ./volumes/portainer/data:/data
+    networks:
+    - iotstack_nw
+  openhab:
+    image: openhab/openhab:latest
+    container_name: openhab
+    restart: unless-stopped
+    network_mode: host
+    ports:
+    - 4050:4050
+    - 4051:4051
+    volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /etc/timezone:/etc/timezone:ro
+    - ./volumes/openhab/addons:/openhab/addons
+    - ./volumes/openhab/conf:/openhab/conf
+    - ./volumes/openhab/userdata:/openhab/userdata
+    environment:
+    - OPENHAB_HTTP_PORT=4050
+    - OPENHAB_HTTPS_PORT=4051
+    - EXTRA_JAVA_OPTS=-Duser.timezone=Etc/UTC"
+  ccu:
+    container_name: ccu
+    image: angelnu/ccu:3
+    restart: unless-stopped
+    ports:
+    - 8082:80
+    - 2001:2001
+    - 2010:2010
+#    - 2222:22
+    - 8181:8181
+#    network_mode: host
+    networks:
+    - iotstack_nw
+    privileged: true
+    volumes:
+      - "./volumes/ccu:/mnt"
+      - "./volumes/ccu_data:/usr/local/addons"
+
+networks:
+  iotstack_nw:
+    name: IOTstack_Net
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 192.16.238.0/24
+  iotstack_nw_internal:
+    name: IOTstack_Net_Internal
+    driver: bridge
+    internal: true
+    ipam:
+      driver: default
+      config:
+      - subnet: 192.16.230.0/24
+  vpn_nw:
+    name: IOTstack_VPN
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 192.18.200.0/24
+  nextcloud_internal:
+    name: IOTstack_NextCloud
+    driver: bridge
+    internal: true
+  default:
+    external: true
+    name: iotstack_iotstack_nw
+
