@@ -11,6 +11,19 @@
     ports: # Changing this won't do anything. Change the port below under environment. Ensure values are synced
     - "4050:4050"
     - "4051:4051"
+    - "8080:8080"
+    - "9443:8443"
+    - "5555:5555"
+    - "9125:9125"
+    - "9126:9126"
+    - "8181:8181"
+    - "9292:9292"
+    - "2000:2000"
+    - "2001:2001"
+    - "2010:2010"
+    - "8701:8701"
+    - "8101:8101"
+    - "43439:43439"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
@@ -24,7 +37,7 @@
 #    # The command node is very important. It overrides
 #    # the "gosu openhab tini -s ./start.sh" command from Dockerfile and runs as root!
 #    command: "tini -s ./start.sh server"
-    logging:
-      options:
-        max-size: "5m"
-        max-file: "3"
+#    logging:
+#      options:
+#        max-size: "5m"
+#        max-file: "3"
