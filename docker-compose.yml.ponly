@@ -1,0 +1,48 @@
+version: '3.6'
+services:
+  portainer:
+    container_name: portainer
+    image: portainer/portainer
+    restart: unless-stopped
+    ports:
+    - 9002:9000
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - ./volumes/portainer/data:/data
+    networks:
+    - iotstack_nw
+    logging:
+      options:
+        max-size: 5m
+        max-file: '3'
+
+networks:
+  iotstack_nw:
+    name: IOTstack_Net
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 192.16.238.0/24
+  iotstack_nw_internal:
+    name: IOTstack_Net_Internal
+    driver: bridge
+    internal: true
+    ipam:
+      driver: default
+      config:
+      - subnet: 192.16.230.0/24
+  vpn_nw:
+    name: IOTstack_VPN
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 192.18.200.0/24
+  nextcloud_internal:
+    name: IOTstack_NextCloud
+    driver: bridge
+    internal: true
+  default:
+    external: true
+    name: iotstack_iotstack_nw
